@@ -77,3 +77,27 @@ sum(dat[,3])
   #str_split()函数可以分割字符串
   table(plate)
                 
+n_g = apply(a, 2, function(x) sum(x>1))  ##统计每个样本有表达的有多少行（基因）
+#reads数量大于1的那些基因为有表达，一般来说单细胞转录组过半数的基因是不会表达的。
+            
+df = data.frame(g = group_list, plate = plate, n_g = n_g)      ##新建数据框（细胞的属性信息）
+#样本为行名，列分别为：样本分类信息，样本分组，样本表达的基因数   
+df$all = 'all'            
+metadata=df
+save(dat, metadata, file = '../input_rpkm.Rdata') ##保持a, dat, df这变量到上级目录
+}
+            
+load(file = '../input.Rdata') ##从上级目录载入input.Rdata
+
+## 每次载入以前的变量，都是可以简单检查一下。
+a[1:4,1:4] 
+dat[1:4,1:4] 
+head(df)
+
+load(file = '../input_rpkm.Rdata') ##从上级目录载入 input_rpkm.Rdata
+
+## 每次载入以前的变量，都是可以简单检查一下。
+#a[1:4,1:4] 
+dat[1:4,1:4] 
+head(metadata)
+            
