@@ -32,4 +32,29 @@ load(file = 'cell_cycle_assigned.Rdata')
 head(assigned$scores)
 table(assigned$phases)
 
-draw = cbind()
+draw = cbind(assigned$score,assigned$phases)  #合并assigned$score列和assigned$phase列
+colnames(draw)
+attach(draw)
+
+library(scatterplot3d)
+scatterplot3d(G1, S, G2M, angle = 20,
+              color = rainbow(3)[as.numeric(as.factor(assigned$phases))],
+              grid = TRUE, box=FALSE)
+detach(draw)
+
+library(pheatmap)
+cg=names(tail(sort(apply(dat,1,sd)),100))
+n = t(scale(t(dat[cg,])))
+
+#pheatmap(n, show_colnames =F, show_rownames=F)
+library(pheatmap)
+df$cellcycle = assigned$phases
+ac=df
+rownames(ac) = colnames(n)
+
+pheatmap(n,show_colnames =F,show_rownames = F,
+         annotation_col=ac,
+         filename = 'all_cells_top_100_sd_all_infor.png')
+dev.off()
+head(ac)
+table(ac[,c(1,5)])
