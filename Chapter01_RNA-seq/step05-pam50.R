@@ -68,7 +68,28 @@ library(genefu)
 
 pam50genes = pam50$centroids.map[c(1,3)]
 pam50genes[pam50genes$probe == 'CDCA1', 1] = 'NUF2'
-cvq
+pam50genes[pam50genes$probe == 'KNTC2', 1] = 'NDC80'
+pam50genes[pam50genes$probe == 'ORC6L', 1] = 'ORC6'
+x = dat
+dim(x)   ###genecards存有人类所有基因ID
+
+x = x[pam50genes$probe[pam50genes$probe %in% rownames(x)],]
+table(group_list)
+
+tmp = data.frame(group = group_list,
+                 subtypes = subtypes)
+rownames(tmp) = colnames(x)
+
+rownames(x)
+
+library(pheatmap)
+pheatmap(x,show_rownames = T,show_colnames=F,
+         annotation_col = tmp,
+         filenames = 'ht_by_pam50.png')
+
+
+
+
    
 
                       
